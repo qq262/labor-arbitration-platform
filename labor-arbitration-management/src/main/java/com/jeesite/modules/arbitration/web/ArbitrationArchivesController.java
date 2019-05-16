@@ -87,15 +87,6 @@ public class ArbitrationArchivesController extends BaseController {
 	@PostMapping(value = "save")
 	@ResponseBody
 	public String save(@Validated ArbitrationArchives arbitrationArchives) throws ParseException {
-		Random r=new Random();
-		SimpleDateFormat sd = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss:SSS");
-		//获取当前时间
-		String time = sd.format(new Date());
-		int num = r.nextInt(10000);
-		long df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss:SSS").parse(time).getTime();
-		String s = String.valueOf(df);
-		arbitrationArchives.setArchivesCode(num+s);
-
 		arbitrationArchivesService.save(arbitrationArchives);
 		return renderResult(Global.TRUE, text("保存档案列表成功！"));
 	}
@@ -109,17 +100,7 @@ public class ArbitrationArchivesController extends BaseController {
 	@PostMapping(value = "cheungSave")
 	@ResponseBody
 	public String cheungSave(@Validated ArbitrationArchives arbitrationArchives) throws ParseException {
-		Random r=new Random();
-		SimpleDateFormat sd = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss:SSS");
-		//获取当前时间
-		String time = sd.format(new Date());
-		int num = r.nextInt(10000);
-		long df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss:SSS").parse(time).getTime();
-		String s = String.valueOf(df);
-		arbitrationArchives.setArchivesCode(num+s);
-
 		arbitrationArchivesService.save(arbitrationArchives);
-		
 		return renderResult(Global.TRUE, text(arbitrationArchives.getId()));
 	}
 	

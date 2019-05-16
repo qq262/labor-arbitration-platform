@@ -3,7 +3,11 @@
  */
 package com.jeesite.modules.arbitration.service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,6 +54,21 @@ public class ArbitrationArchivesService extends CrudService<ArbitrationArchivesD
 	@Override
 	@Transactional(readOnly=false)
 	public void save(ArbitrationArchives arbitrationArchives) {
+		Random r=new Random();
+		SimpleDateFormat sd = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss:SSS");
+		//获取当前时间
+		String time = sd.format(new Date());
+		int num = r.nextInt(10000);
+		long df = 0;
+		try {
+			df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss:SSS").parse(time).getTime();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		String s = String.valueOf(df);
+		arbitrationArchives.setArchivesCode(num+s);
+
 		super.save(arbitrationArchives);
 	}
 	

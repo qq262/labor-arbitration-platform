@@ -82,7 +82,7 @@
 								<span class="required hide">*</span> ${text('受理日期')}：<i class="fa icon-question hide"></i></label>
 							<div class="col-sm-8">
 								<#form:input path="dateAcceptance" id="ddateAcceptance" readonly="true" maxlength="20" class="form-control Wdate"
-									dataFormat="datetime" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',isShowClear:true});" />
+									dataFormat="datetime" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',onpicking:dateClickdateAcceptance,isShowClear:true});" />
 							</div>
 						</div>
 					</div>
@@ -199,7 +199,6 @@ function dateClickdateAcceptance(a){
 	 var _date=a.cal.getNewDateStr();//获取点击时选中的日期
 	 var d2 = new Date(_date);
 	   var current = d2.getTime();
-	  alert(_date)
 	   d2.setDate(d2.getDate() + 30);
 	   var result1=format(d2,'yyyy-MM-dd HH:mm');
 	     $("#dopeningDate").val(result1);
