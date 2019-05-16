@@ -1,0 +1,239 @@
+<% layout('/layouts/default.html', {title: '档案列表管理', libs: ['validate']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header with-border">
+			<div class="box-title">
+				<i class="fa fa-list-alt"></i> ${text(arbitrationArchives.isNewRecord ? '新增档案列表' : '编辑档案列表')}
+			</div>
+			<div class="box-tools pull-right">
+				<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+			</div>
+		</div>
+		<#form:form id="inputForm" model="${arbitrationArchives}" action="${ctx}/arbitration/arbitrationArchives/save" method="post" class="form-horizontal">
+			
+			<div class="box-body">
+				<div class="form-unit">${text('基本信息')}</div>
+				<#form:hidden path="id"/>
+				<div class="row">
+					<div class="col-xs-6">
+						<div class="form-group">
+							<label class="control-label col-sm-4" title="">
+								<span class="required hide">*</span> ${text('档案等级')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-8">
+								<#form:select path="archivesLevel" dictType="file_rank" blankOption="false" class="form-control" />
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-6">
+						<div class="form-group">
+							<label class="control-label col-sm-4" title="">
+								<span class="required hide">*</span> ${text('争议类型')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-8">
+								<#form:select path="archivesType" dictType="types_of_disputes" blankOption="false" class="form-control" />
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-6">
+						<div class="form-group">
+							<label class="control-label col-sm-4" title="">
+								<span class="required hide">*</span> ${text('档案编号')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-8">
+								<#form:input path="archivesCode" maxlength="64" class="form-control"/>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-6">
+						<div class="form-group">
+							<label class="control-label col-sm-4" title="">
+								<span class="required hide">*</span> ${text('申请人')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-8">
+								<#form:input path="applyUser" maxlength="255" class="form-control"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-6">
+						<div class="form-group">
+							<label class="control-label col-sm-4" title="">
+								<span class="required hide">*</span> ${text('被申请人')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-8">
+								<#form:input path="defendantUser" maxlength="255" class="form-control"/>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-6">
+						<div class="form-group">
+							<label class="control-label col-sm-4" title="">
+								<span class="required hide">*</span> ${text('申请日期')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-8">
+								<#form:input path="applyDate" id="d4311" readonly="true" maxlength="20" class="form-control Wdate date"
+									dataFormat="datetime" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',onpicking:dateClick,isShowClear:true});"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-6">
+						<div class="form-group">
+							<label class="control-label col-sm-4" title="">
+								<span class="required hide">*</span> ${text('受理日期')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-8">
+								<#form:input path="dateAcceptance" id="ddateAcceptance" readonly="true" maxlength="20" class="form-control Wdate"
+									dataFormat="datetime" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',isShowClear:true});" />
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-6">
+						<div class="form-group">
+							<label class="control-label col-sm-4" title="">
+								<span class="required hide">*</span> ${text('开庭日期')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-8">
+								<#form:input path="openingDate" id="dopeningDate" readonly="true" maxlength="20" class="form-control Wdate"
+									dataFormat="datetime" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',isShowClear:true});"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-6">
+						<div class="form-group">
+							<label class="control-label col-sm-4" title="">
+								<span class="required hide">*</span> ${text('提交文书日期')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-8">
+								<#form:input path="dateSubmission" id="ddateSubmission" readonly="true" maxlength="20" class="form-control Wdate"
+									dataFormat="date" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:true});"/>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-6">
+						<div class="form-group">
+							<div class="col-sm-8">
+								<#form:select path="dateTimeSlot" dictType="date_time_slot" blankOption="false" class="form-control" />
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="box-footer">
+				<div class="row">
+					<div class="col-sm-offset-2 col-sm-10">
+						<% if (hasPermi('arbitration:arbitrationArchives:edit')){ %>
+							<button type="submit" class="btn btn-sm btn-primary" id="btnSubmit"><i class="fa fa-check"></i> ${text('保 存')}</button>&nbsp;
+						<% } %>
+						<button type="button" class="btn btn-sm btn-default" id="btnCancel" onclick="js.closeCurrentTabPage()"><i class="fa fa-reply-all"></i> ${text('关 闭')}</button>
+						<button type="button" class="btn btn-sm btn-primary" id="btnchenug"><i class="fa fa-check"></i> ${text('生成	')}</button>&nbsp;
+					
+					</div>
+				</div>
+			</div>
+		</#form:form>
+		
+	</div>
+	<div id="cheungFrist">
+	
+<!-- 	<iframe src="${@Global.getConfig('companyURL')}&id=" width="1601px" height= "1658px" name="topFrame"
+		scrolling="No"  noresize="noresize" frameborder="0" id="topFrame" style="display:none"></iframe> -->
+	</div>
+	
+</div>
+<% } %>
+<script>
+$("#inputForm").validate({
+	submitHandler: function(form){
+		js.ajaxSubmitForm($(form), function(data){
+			js.showMessage(data.message);
+			if(data.result == Global.TRUE){
+				js.closeCurrentTabPage(function(contentWindow){
+					contentWindow.page();
+				});
+			}
+		}, "json");
+    }
+});
+</script>
+
+<script type="text/javascript">
+document.getElementById("btnchenug").onclick=function(){
+	$("#inputForm").ajaxSubmit({
+		url:"${ctx}/arbitration/arbitrationArchives/cheungSave",
+		type:"post",
+		dataType:"json",
+		success:function(data){
+var option=$("<iframe src=${@Global.getConfig('companyURL')}&id='"+data.message+"' width=1601px height= 1658px name=topFrame scrolling=No  noresize=noresize frameborder=0 id=topFrame>");
+	/* 	document.getElementById("topFrame").style.display="block"; */
+	$("#cheungFrist").append(option);
+ 		}
+	});
+	
+	
+
+}
+</script>
+<script type="text/javascript">
+//点击申请日期其他按规则更改
+function dateClick(a){
+    var _date=a.cal.getNewDateStr();//获取点击时选中的日期
+   
+   var d2 = new Date(_date);
+   var current = d2.getTime();
+   var d3 = new Date(_date);
+   var d4 = new Date(_date);
+   d2.setDate(d2.getDate() + 5);
+  
+   var result1=format(d2,'yyyy-MM-dd HH:mm');
+    $("#ddateAcceptance").val(result1);
+    d3.setDate(d3.getDate() + 15);
+    var result1=format(d3,'yyyy-MM-dd');
+    $("#ddateSubmission").val(result1);
+    d4.setDate(d4.getDate() + 35);
+    var result1=format(d4,'yyyy-MM-dd HH:mm');
+     $("#dopeningDate").val(result1);
+    
+}
+
+//点击受理日期 开庭日期为受理日期的30天后
+function dateClickdateAcceptance(a){
+	 var _date=a.cal.getNewDateStr();//获取点击时选中的日期
+	 var d2 = new Date(_date);
+	   var current = d2.getTime();
+	  alert(_date)
+	   d2.setDate(d2.getDate() + 30);
+	   var result1=format(d2,'yyyy-MM-dd HH:mm');
+	     $("#dopeningDate").val(result1);
+	
+}
+</script>
+<script>
+  //封装时间格式
+  function format(time, format) {
+    var t = new Date(time);
+    var tf = function (i) {
+      return (i < 10 ? '0' : '') + i
+    };
+    return format.replace(/yyyy|MM|dd|HH|mm|ss/g, function (a) {
+      switch (a) {
+        case 'yyyy':
+          return tf(t.getFullYear());
+          break;
+        case 'MM':
+          return tf(t.getMonth() + 1);
+          break;
+        case 'mm':
+          return tf(t.getMinutes());
+          break;
+        case 'dd':
+          return tf(t.getDate());
+          break;
+        case 'HH':
+          return tf(t.getHours());
+          break;
+        case 'ss':
+          return tf(t.getSeconds());
+          break;
+      }
+    })
+  }
+</script>
