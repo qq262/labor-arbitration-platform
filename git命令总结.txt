@@ -1,0 +1,44 @@
+﻿git 仓库 
+你的名字和Email地址
+$ git config --global user.name "qinxuanhao"
+$ git config --global user.email "292609260@qq.com"
+
+
+$ mkdir xxx  创建文件夹
+git init 命令把这个目录变成Git可以管理的仓库：
+言归正传，现在我们编写一个readme.txt文件，内容如下：
+
+Git is a version control system.
+Git is free software.
+一定要放到learngit目录下（子目录也行），因为这是一个Git仓库，放到其他地方Git再厉害也找不到这个文件。
+git add xxx.txt 添加文件于仓库
+git commit -m "wrote a readme file"  提交到仓库
+我们继续修改readme.txt文件，改成如下内容：
+
+Git is a distributed version control system.
+Git is free software.
+
+
+
+现在，运行git status命令看看结果：
+
+git clone ssh://git@123.56.223.79:10022/root/labor-arbitration-platform.git   下载远程代码
+git checkout  -b dev  切换分支
+git pull origin dev  更新分支代码
+
+
+
+提交代码
+ git status
+git add .
+git commit -a -m "modify class"
+ git pull origin dev
+ git status
+ git push origin dev
+
+回滚到指定的版本
+
+git reset --hard e377f60e28c8b84158
+
+
+http://123.56.223.79:10080/root/labor-arbitration-platform.git 下载指定url里面的项目
