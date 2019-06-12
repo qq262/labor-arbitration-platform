@@ -1,0 +1,16 @@
+新闻动态表:news_trends
+新闻动态字典表:new_trend
+在页面中添加
+,'ueditor'
+<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group">
+							<label class="control-label col-sm-2" title="">
+								<span class="required hide">*</span> 备注信息：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-10">
+								<#form:ueditor path="remarks" maxlength="10000" height="200" class="required"
+									simpleToolbars="true" readonly="false" outline="false"/>
+							</div>
+						</div>
+					</div>
+				</div>

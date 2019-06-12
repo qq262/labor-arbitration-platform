@@ -3,11 +3,6 @@
  */
 package com.jeesite.modules.arbitration.web;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Random;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -28,9 +23,9 @@ import com.jeesite.modules.arbitration.entity.ArbitrationArchives;
 import com.jeesite.modules.arbitration.service.ArbitrationArchivesService;
 
 /**
- * 档案Controller
- * @author qinxuanhao
- * @version 2019-05-15
+ * js_arbitration_archivesController
+ * @author 秦宣浩
+ * @version 2019-06-12
  */
 @Controller
 @RequestMapping(value = "${adminPath}/arbitration/arbitrationArchives")
@@ -80,40 +75,25 @@ public class ArbitrationArchivesController extends BaseController {
 	}
 
 	/**
-	 * 保存档案列表
-	 * @throws ParseException 
+	 * 保存js_arbitration_archives
 	 */
 	@RequiresPermissions("arbitration:arbitrationArchives:edit")
 	@PostMapping(value = "save")
 	@ResponseBody
-	public String save(@Validated ArbitrationArchives arbitrationArchives) throws ParseException {
+	public String save(@Validated ArbitrationArchives arbitrationArchives) {
 		arbitrationArchivesService.save(arbitrationArchives);
-		return renderResult(Global.TRUE, text("保存档案列表成功！"));
+		return renderResult(Global.TRUE, text("保存js_arbitration_archives成功！"));
 	}
 	
-	
 	/**
-	 * 生成
-	 * @throws ParseException 
-	 */
-	@RequiresPermissions("arbitration:arbitrationArchives:edit")
-	@PostMapping(value = "cheungSave")
-	@ResponseBody
-	public String cheungSave(@Validated ArbitrationArchives arbitrationArchives) throws ParseException {
-		arbitrationArchivesService.save(arbitrationArchives);
-		return renderResult(Global.TRUE, text(arbitrationArchives.getId()));
-	}
-	
-	
-	/**
-	 * 删除档案列表
+	 * 删除js_arbitration_archives
 	 */
 	@RequiresPermissions("arbitration:arbitrationArchives:edit")
 	@RequestMapping(value = "delete")
 	@ResponseBody
 	public String delete(ArbitrationArchives arbitrationArchives) {
 		arbitrationArchivesService.delete(arbitrationArchives);
-		return renderResult(Global.TRUE, text("删除档案列表成功！"));
+		return renderResult(Global.TRUE, text("删除js_arbitration_archives成功！"));
 	}
 	
 }
