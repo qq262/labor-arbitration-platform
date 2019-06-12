@@ -3,11 +3,7 @@
  */
 package com.jeesite.modules.arbitration.service;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.Random;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,11 +12,12 @@ import com.jeesite.common.entity.Page;
 import com.jeesite.common.service.CrudService;
 import com.jeesite.modules.arbitration.entity.ArbitrationArchives;
 import com.jeesite.modules.arbitration.dao.ArbitrationArchivesDao;
+import com.jeesite.modules.file.utils.FileUploadUtils;
 
 /**
- * 档案Service
- * @author qinxuanhao
- * @version 2019-05-15
+ * js_arbitration_archivesService
+ * @author 秦宣浩
+ * @version 2019-06-12
  */
 @Service
 @Transactional(readOnly=true)
@@ -54,22 +51,11 @@ public class ArbitrationArchivesService extends CrudService<ArbitrationArchivesD
 	@Override
 	@Transactional(readOnly=false)
 	public void save(ArbitrationArchives arbitrationArchives) {
-		Random r=new Random();
-		SimpleDateFormat sd = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss:SSS");
-		//获取当前时间
-		String time = sd.format(new Date());
-		int num = r.nextInt(10000);
-		long df = 0;
-		try {
-			df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss:SSS").parse(time).getTime();
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		String s = String.valueOf(df);
-		arbitrationArchives.setArchivesCode(num+s);
-
 		super.save(arbitrationArchives);
+		// 保存上传图片
+		FileUploadUtils.saveFileUpload(arbitrationArchives.getId(), "arbitrationArchives_image");
+		// 保存上传附件
+		FileUploadUtils.saveFileUpload(arbitrationArchives.getId(), "arbitrationArchives_file");
 	}
 	
 	/**

@@ -1,32 +1,20 @@
-<% layout('/layouts/default.html', {title: '档案列表管理', libs: ['dataGrid']}){ %>
+<% layout('/layouts/default.html', {title: 'js_arbitration_archives管理', libs: ['dataGrid']}){ %>
 <div class="main-content">
 	<div class="box box-main">
 		<div class="box-header">
 			<div class="box-title">
-				<i class="fa fa-list-alt"></i> ${text('档案列表管理')}
+				<i class="fa fa-list-alt"></i> ${text('js_arbitration_archives管理')}
 			</div>
 			<div class="box-tools pull-right">
 				<a href="#" class="btn btn-default" id="btnSearch" title="${text('查询')}"><i class="fa fa-filter"></i> ${text('查询')}</a>
 				<% if(hasPermi('arbitration:arbitrationArchives:edit')){ %>
-					<a href="${ctx}/arbitration/arbitrationArchives/form" class="btn btn-default btnTool" title="${text('新增档案列表')}"><i class="fa fa-plus"></i> ${text('新增')}</a>
+					<a href="${ctx}/arbitration/arbitrationArchives/form" class="btn btn-default btnTool" title="${text('新增js_arbitration_archives')}"><i class="fa fa-plus"></i> ${text('新增')}</a>
 				<% } %>
 			</div>
 		</div>
 		<div class="box-body">
 			<#form:form id="searchForm" model="${arbitrationArchives}" action="${ctx}/arbitration/arbitrationArchives/listData" method="post" class="form-inline hide"
 					data-page-no="${parameter.pageNo}" data-page-size="${parameter.pageSize}" data-order-by="${parameter.orderBy}">
-				<div class="form-group">
-					<label class="control-label">${text('档案等级')}：</label>
-					<div class="control-inline width-120">
-						<#form:select path="archivesLevel" dictType="file_rank" blankOption="true" class="form-control"/>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="control-label">${text('争议类型')}：</label>
-					<div class="control-inline width-120">
-						<#form:select path="archivesType" dictType="types_of_disputes" blankOption="true" class="form-control"/>
-					</div>
-				</div>
 				<div class="form-group">
 					<label class="control-label">${text('档案编号')}：</label>
 					<div class="control-inline">
@@ -46,6 +34,24 @@
 					</div>
 				</div>
 				<div class="form-group">
+					<label class="control-label">${text('争议类型')}：</label>
+					<div class="control-inline">
+						<#form:input path="archivesType" maxlength="255" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('档案等级')}：</label>
+					<div class="control-inline">
+						<#form:input path="archivesLevel" maxlength="255" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('档案状态')}：</label>
+					<div class="control-inline width-120">
+						<#form:select path="status" dictType="sys_search_status" blankOption="true" class="form-control"/>
+					</div>
+				</div>
+				<div class="form-group">
 					<label class="control-label">${text('申请日期')}：</label>
 					<div class="control-inline">
 						<#form:input path="applyDate" readonly="true" maxlength="20" class="form-control Wdate-datetime"
@@ -53,10 +59,9 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label">${text('受理日期')}：</label>
+					<label class="control-label">${text('remarks')}：</label>
 					<div class="control-inline">
-						<#form:input path="dateAcceptance" readonly="true" maxlength="20" class="form-control Wdate-datetime"
-							dataFormat="datetime" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',isShowClear:false});"/>
+						<#form:input path="remarks" maxlength="500" class="form-control width-120"/>
 					</div>
 				</div>
 				<div class="form-group">
@@ -67,16 +72,9 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label">${text('提交文书日期')}：</label>
-					<div class="control-inline">
-						<#form:input path="dateSubmission" readonly="true" maxlength="20" class="form-control Wdate-datetime"
-							dataFormat="datetime" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',isShowClear:false});"/>
-					</div>
-				</div>
-				<div class="form-group">
 					<label class="control-label">${text('时间段')}：</label>
-					<div class="control-inline width-120">
-						<#form:select path="dateTimeSlot" dictType="date_time_slot" blankOption="true" class="form-control"/>
+					<div class="control-inline">
+						<#form:input path="dateTimeSlot" maxlength="255" class="form-control width-120"/>
 					</div>
 				</div>
 				<div class="form-group">
@@ -95,28 +93,26 @@
 $('#dataGrid').dataGrid({
 	searchForm: $("#searchForm"),
 	columnModel: [
-		{header:'${text("档案等级")}', name:'archivesLevel', index:'a.archives_level', width:150, align:"left", frozen:true, formatter: function(val, obj, row, act){
-			return '<a href="${ctx}/arbitration/arbitrationArchives/form?id='+row.id+'" class="btnList" data-title="${text("编辑档案列表")}">'+(val||row.id)+'</a>';
+		{header:'${text("档案编号")}', name:'archivesCode', index:'a.archives_code', width:150, align:"left", frozen:true, formatter: function(val, obj, row, act){
+			return '<a href="${ctx}/arbitration/arbitrationArchives/form?id='+row.id+'" class="btnList" data-title="${text("编辑js_arbitration_archives")}">'+(val||row.id)+'</a>';
 		}},
-		{header:'${text("争议类型")}', name:'archivesType', index:'a.archives_type', width:150, align:"center", formatter: function(val, obj, row, act){
-			return js.getDictLabel(${@DictUtils.getDictListJson('types_of_disputes')}, val, '${text("未知")}', true);
-		}},
-		{header:'${text("档案编号")}', name:'archivesCode', index:'a.archives_code', width:150, align:"left"},
 		{header:'${text("申请人")}', name:'applyUser', index:'a.apply_user', width:150, align:"left"},
 		{header:'${text("被申请人")}', name:'defendantUser', index:'a.defendant_user', width:150, align:"left"},
-		{header:'${text("申请日期")}', name:'applyDate', index:'a.apply_date', width:150, align:"center"},
-		{header:'${text("受理日期")}', name:'dateAcceptance', index:'a.date_acceptance', width:150, align:"center"},
-		{header:'${text("开庭日期")}', name:'openingDate', index:'a.opening_date', width:150, align:"center"},
-		{header:'${text("提交文书日期")}', name:'dateSubmission', index:'a.date_submission', width:150, align:"center"},
-		{header:'${text("时间段")}', name:'dateTimeSlot', index:'a.date_time_slot', width:150, align:"center", formatter: function(val, obj, row, act){
-			return js.getDictLabel(${@DictUtils.getDictListJson('date_time_slot')}, val, '${text("未知")}', true);
+		{header:'${text("争议类型")}', name:'archivesType', index:'a.archives_type', width:150, align:"left"},
+		{header:'${text("档案等级")}', name:'archivesLevel', index:'a.archives_level', width:150, align:"left"},
+		{header:'${text("档案状态")}', name:'status', index:'a.status', width:150, align:"center", formatter: function(val, obj, row, act){
+			return js.getDictLabel(${@DictUtils.getDictListJson('sys_search_status')}, val, '${text("未知")}', true);
 		}},
+		{header:'${text("申请日期")}', name:'applyDate', index:'a.apply_date', width:150, align:"center"},
+		{header:'${text("update_date")}', name:'updateDate', index:'a.update_date', width:150, align:"center"},
+		{header:'${text("remarks")}', name:'remarks', index:'a.remarks', width:150, align:"left"},
+		{header:'${text("开庭日期")}', name:'openingDate', index:'a.opening_date', width:150, align:"center"},
+		{header:'${text("时间段")}', name:'dateTimeSlot', index:'a.date_time_slot', width:150, align:"left"},
 		{header:'${text("操作")}', name:'actions', width:120, sortable:false, title:false, formatter: function(val, obj, row, act){
 			var actions = [];
 			<% if(hasPermi('arbitration:arbitrationArchives:edit')){ %>
-				actions.push('<a href="${ctx}/arbitration/arbitrationArchives/form?id='+row.id+'" class="btnList" title="${text("编辑档案列表")}"><i class="fa fa-pencil"></i></a>&nbsp;');
-				actions.push('<a href="${ctx}/arbitration/arbitrationArchives/delete?id='+row.id+'" class="btnList" title="${text("删除档案列表")}" data-confirm="${text("确认要删除该档案列表吗？")}"><i class="fa fa-trash-o"></i></a>&nbsp;');
-				actions.push('<a id="'+row.id+'" target="_blank" href="${@Global.getConfig('companyURL')}&id='+row.id+'" class="helloWord" title="${text("生成文书")}"><i class="fa">生成文书</i></a>&nbsp;');
+				actions.push('<a href="${ctx}/arbitration/arbitrationArchives/form?id='+row.id+'" class="btnList" title="${text("编辑js_arbitration_archives")}"><i class="fa fa-pencil"></i></a>&nbsp;');
+				actions.push('<a href="${ctx}/arbitration/arbitrationArchives/delete?id='+row.id+'" class="btnList" title="${text("删除js_arbitration_archives")}" data-confirm="${text("确认要删除该js_arbitration_archives吗？")}"><i class="fa fa-trash-o"></i></a>&nbsp;');
 			<% } %>
 			return actions.join('');
 		}}
