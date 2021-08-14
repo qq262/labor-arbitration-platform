@@ -1,0 +1,77 @@
+<% layout('/layouts/default.html', {title: 'government_services管理', libs: ['dataGrid']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header">
+			<div class="box-title">
+				<i class="fa fa-list-alt"></i> ${text('government_services管理')}
+			</div>
+			<div class="box-tools pull-right">
+				<a href="#" class="btn btn-default" id="btnSearch" title="${text('查询')}"><i class="fa fa-filter"></i> ${text('查询')}</a>
+				<% if(hasPermi('government:governmentServices:edit')){ %>
+					<a href="${ctx}/government/governmentServices/form" class="btn btn-default btnTool" title="${text('新增government_services')}"><i class="fa fa-plus"></i> ${text('新增')}</a>
+				<% } %>
+			</div>
+		</div>
+		<div class="box-body">
+			<#form:form id="searchForm" model="${governmentServices}" action="${ctx}/government/governmentServices/listData" method="post" class="form-inline hide"
+					data-page-no="${parameter.pageNo}" data-page-size="${parameter.pageSize}" data-order-by="${parameter.orderBy}">
+				<div class="form-group">
+					<label class="control-label">${text('标题')}：</label>
+					<div class="control-inline">
+						<#form:input path="title" maxlength="255" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('作者')}：</label>
+					<div class="control-inline">
+						<#form:input path="author" maxlength="255" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('类型')}：</label>
+					<div class="control-inline width-120">
+						<#form:select path="type" dictType="new_trend" blankOption="true" class="form-control"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<button type="submit" class="btn btn-primary btn-sm">${text('查询')}</button>
+					<button type="reset" class="btn btn-default btn-sm">${text('重置')}</button>
+				</div>
+			</#form:form>
+			<table id="dataGrid"></table>
+			<div id="dataGridPage"></div>
+		</div>
+	</div>
+</div>
+<% } %>
+<script>
+// 初始化DataGrid对象
+$('#dataGrid').dataGrid({
+	searchForm: $("#searchForm"),
+	columnModel: [
+		{header:'${text("标题")}', name:'title', index:'a.title', width:150, align:"left", frozen:true, formatter: function(val, obj, row, act){
+			return '<a href="${ctx}/government/governmentServices/form?id='+row.id+'" class="btnList" data-title="${text("编辑government_services")}">'+(val||row.id)+'</a>';
+		}},
+		{header:'${text("更新时间")}', name:'updateDate', index:'a.update_date', width:150, align:"center"},
+		{header:'${text("作者")}', name:'author', index:'a.author', width:150, align:"left"},
+		{header:'${text("图片")}', name:'picture', index:'a.picture', width:150, align:"left"},
+		{header:'${text("文章内容")}', name:'contentArticle', index:'a.content_article', width:150, align:"left"},
+		{header:'${text("类型")}', name:'type', index:'a.type', width:150, align:"center", formatter: function(val, obj, row, act){
+			return js.getDictLabel(${@DictUtils.getDictListJson('new_trend')}, val, '${text("未知")}', true);
+		}},
+		{header:'${text("文件上传")}', name:'fileUpload', index:'a.file_upload', width:150, align:"left"},
+		{header:'${text("操作")}', name:'actions', width:120, sortable:false, title:false, formatter: function(val, obj, row, act){
+			var actions = [];
+			<% if(hasPermi('government:governmentServices:edit')){ %>
+				actions.push('<a href="${ctx}/government/governmentServices/form?id='+row.id+'" class="btnList" title="${text("编辑government_services")}"><i class="fa fa-pencil"></i></a>&nbsp;');
+				actions.push('<a href="${ctx}/government/governmentServices/delete?id='+row.id+'" class="btnList" title="${text("删除government_services")}" data-confirm="${text("确认要删除该government_services吗？")}"><i class="fa fa-trash-o"></i></a>&nbsp;');
+			<% } %>
+			return actions.join('');
+		}}
+	],
+	// 加载成功后执行事件
+	ajaxSuccess: function(data){
+		
+	}
+});
+</script>
