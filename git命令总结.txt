@@ -42,3 +42,15 @@ git reset --hard e377f60e28c8b84158
 
 
 http://123.56.223.79:10080/root/labor-arbitration-platform.git 下载指定url里面的项目
+
+
+提交代码到git，报如下错误：
+
+Unable to access 'https://github.com/**/**/': OpenSSL SSL_read: Connection was aborted, errno 10053
+
+记录下解决方案：
+
+git config --global http.sslVerify false
+————————————————
+版权声明：本文为CSDN博主「抚琴一线」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/ai1235678/article/details/114689435
